@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Shopping | Page Fit</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark-teal: #1f6666;
+            --text-light: #e0f2f1;
+            --accent: #002626;
+            --input-bg: rgba(255, 255, 255, 0.15); 
+            --input-border: rgba(255, 255, 255, 0.4);
+        }
+
+        /* 1. Page Fit Basics */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--bg-dark-teal); 
+            color: var(--text-light); 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; /* Content ko vertical flow deta hai */
+        }
+
+        /* 2. Responsive Navigation */
+        nav { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 15px 5%; 
+            align-items: center; 
+            background: rgba(0,0,0,0.2); 
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav h2 { font-size: 1.5rem; }
+        nav div a { color: var(--text-light); text-decoration: none; margin-left: 15px; cursor: pointer; font-size: 0.9rem; }
+
+        .hero { text-align: center; padding: 40px 20px; }
+        .hero h1 { font-size: 2.5rem; color: #7fffd4; margin-bottom: 10px; } 
+
+        /* 3. Auto-Fit Search Box */
+        .search-box input[type="text"] { 
+            padding: 12px 20px; 
+            border-radius: 25px; 
+            border: 2px solid var(--input-border); 
+            width: 90%; 
+            max-width: 400px; /* Desktop par limit rahega */
+            background: var(--input-bg); 
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        /* 4. Grid "Auto-Fit" - Yeh screens ke hisaab se cards adjust karega */
+        .shop-container { 
+            max-width: 1200px; 
+            margin: 20px auto; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px; 
+            padding: 20px;
+            width: 100%;
+        }
+
+        .card { 
+            background: rgba(255, 255, 255, 0.08); 
+            padding: 25px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); }
+        
+        /* 5. Contact Section Fit */
+        .contact-section { 
+            width: 90%;
+            max-width: 600px; 
+            margin: 40px auto; 
+            padding: 30px; 
+            background: rgba(255, 255, 255, 0.08); 
+            border-radius: 20px; 
+        }
+
+        .form-input { 
+            width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; 
+            border: 2px solid var(--input-border); 
+            background: var(--input-bg); 
+            color: white;
+        }
+
+        button { 
+            background: var(--accent); 
+            border: none; 
+            padding: 12px 25px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            color: #fff; 
+            width: 100%; /* Mobile par button bada dikhega */
+            max-width: 200px;
+        }
+
+        /* Modal Fit */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 2000; }
+        .modal-content { background: var(--bg-dark-teal); padding: 30px; border-radius: 20px; width: 90%; max-width: 350px; text-align: center; border: 2px solid rgba(255,255,255,0.2); }
+
+        /* Media Query for Mobile */
+        @media (max-width: 600px) {
+            nav { flex-direction: column; gap: 10px; }
+            .hero h1 { font-size: 1.8rem; }
+            nav div a { margin: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Baaki HTML wahi rahega jo aapne diya tha -->
+    <nav>
+        <h2>Sua Shopping</h2>
+        <div>
+            <a href="#">Home</a>
+            <a onclick="toggleModal()">Login</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Sua Shopping</h1>
+        <p>Premium Quality, Modern Trends.</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search products...">
+        </div>
+    </section>
+
+    <div class="shop-container" id="productGrid">
+        <div class="card"><h3>T-Shirt</h3><p>$20</p><button onclick="alert('Added!')">Add to Cart</button></div>
+        <div class="card"><h3>Shoes</h3><p>$50</p><button onclick="alert('Added!')">Add to Cart</button></div>
+        <div class="card"><h3>Smart Watch</h3><p>$100</p><button onclick="alert('Added!')">Add to Cart</button></div>
+    </div>
+
+    <section class="contact-section" id="contact">
+        <h2>Contact Us</h2>
+        <input type="text" class="form-input" placeholder="Your Name">
+        <textarea class="form-input" rows="4" placeholder="Your Message"></textarea>
+        <center><button onclick="alert('Message Sent!')">Send Message</button></center>
+    </section>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <input type="text" class="form-input" placeholder="Username">
+            <input type="password" class="form-input" placeholder="Password">
+            <button onclick="toggleModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal() {
+            let m = document.getElementById('loginModal');
+            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function filterProducts() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+                cards[i].style.display = title.includes(input) ? "" : "none";
+            }
+        }
+    </script>
+</body>
+</html>
